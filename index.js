@@ -21,8 +21,12 @@ app.get("/", (req, res) => {
   res.send("Ok");
 });
 
-app.get("/greeting", (req, res) => {
-  res.send("Hello");
+app.get("/test", (req, res) => {
+  res.send({ status: 200, message: "ok" });
+});
+
+app.get("/time", (req, res) => {
+  res.send({ status: 200, message: Date() });
 });
 
 app.listen(port, () => {
