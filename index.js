@@ -71,9 +71,9 @@ app.get("/movies/update", (req, res) => {
   res.send({ status: 200, message: "ok" });
 });
 
-app.get("/movies/delete", (req, res) => {
-  res.send({ status: 200, message: "ok" });
-});
+// app.get("/movies/delete", (req, res) => {
+//   res.send({ status: 200, message: "ok" });
+// });
 
 app.get("/movies/read/by-date", (req, res) => {
   res.send({ status: 200, data: movies.sort((a, b) => a.year - b.year) });
@@ -144,6 +144,29 @@ app.get("/movies/add", (req, res) => {
   };
   movies.push(mov);
   res.json(movies);
+});
+
+//Step 9
+app.get("/movies/delete/:id", (req, res) => {
+  const ID = req.params.id;
+  if (isNaN(ID)) {
+    res.status(404);
+    res.send({
+      status: 404,
+      error: true,
+      message: `please enter a valid id number`,
+    });
+  } else if (ID < 0 || ID > movies.length - 1) {
+    res.status(404);
+    res.send({
+      status: 404,
+      error: true,
+      message: `the movie ${ID} does not exist`,
+    });
+  } else {
+    movies.splice(ID, 1);
+    res.send(movies);
+  }
 });
 
 app.listen(port, () => {
