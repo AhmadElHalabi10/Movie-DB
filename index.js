@@ -116,6 +116,7 @@ app.get("/movies/read/id/:id", (req, res) => {
   }
 });
 
+//Step 8
 app.get("/movies/add", (req, res) => {
   const { title, year, rating } = req.query;
   if (!title || !year) {
