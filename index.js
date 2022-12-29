@@ -38,29 +38,6 @@ app.get("/hello", (req, res) => {
   res.send({ status: 200, message: `Hello, ` });
 });
 
-// app.get("/search", (req, res) => {
-//   const search = req.query.s;
-
-//   if (typeof search != "undefined") {
-//     const response = {
-//       status: 200,
-//       message: "ok",
-//       data: search,
-//     };
-
-//     res.send(response);
-//   } else {
-//     const response = {
-//       status: 500,
-//       error: true,
-//       message: "you have to provide a search",
-//     };
-
-//     res.status(500);
-//     res.send(response);
-//   }
-// });
-
 app.get("/search", (req, res) => {
   const search = req.query.s;
   if (search) {
@@ -74,11 +51,12 @@ app.get("/search", (req, res) => {
   }
 });
 
+//Step6
 const movies = [
-  { title: "Jaws", year: 1975, rating: 8 },
-  { title: "Avatar", year: 2009, rating: 7.8 },
-  { title: "Brazil", year: 1985, rating: 8 },
-  { title: "الإرهاب والكباب", year: 1992, rating: 6.2 },
+  { title: "Jaws", year: "1975", rating: 8 },
+  { title: "Avatar", year: "2009", rating: 7.8 },
+  { title: "Brazil", year: "1985", rating: 8 },
+  { title: "الإرهاب والكباب", year: "1992", rating: 6.2 },
 ];
 
 app.get("/movies/create", (req, res) => {
@@ -97,6 +75,66 @@ app.get("/movies/delete", (req, res) => {
   res.send({ status: 200, message: "ok" });
 });
 
+// //Sort By date
+// app.get("/movies/read/by-date", (req, res) => {
+//   res.send({
+//     status: 200,
+//     data: movies.sort((a, b) => a.year - b.year),
+//   });
+// });
+
+// //Sort By rating
+// app.get("/movies/read/by-rating", (req, res) => {
+//   res.send({
+//     status: 200,
+//     data: movies.sort((a, b) => a.rating - b.rating),
+//   });
+// });
+
+// //Sort By Title
+// app.get("/movies/read/by-title", (req, res) => {
+//   let sorted = movies.sort((a, b) => {
+//     let A = a.title.toLowerCase();
+//     let B = b.title.toLowerCase();
+//     if (A < B) {
+//       return -1;
+//     }
+//     if (A > B) {
+//       return 1;
+//     }
+//     return 0;
+//   });
+//   res.send({
+//     status: 200,
+//     data: sorted,
+//   });
+// });
+
+app.get("/movies/read/by-date", (req, res) => {
+  res.send({ status: 200, data: movies.sort((a, b) => a.year - b.year) });
+});
+
+app.get("/movies/read/by-rating", (req, res) => {
+  res.send({ status: 200, data: movies.sort((a, b) => a.rating - b.rating) });
+});
+
+app.get("/movies/read/by-title", (req, res) => {
+  const moviesOrderedByTitle = movies.sort((a, b) => {
+    const A = a.title.toLowerCase();
+    const B = b.title.toLowerCase();
+    if (A < B) {
+      return -1;
+    } else if (A > B) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+  res.send({
+    status: 200,
+    data: moviesOrderedByTitle,
+  });
+});
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
