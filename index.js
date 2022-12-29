@@ -41,7 +41,7 @@ app.get("/hello", (req, res) => {
 app.get("/search", (req, res) => {
   const search = req.query.s;
   if (search) {
-    res.status(200).json({ status: 200, message: "OK", data: search });
+    res.status(200).json({ status: 200, message: "OK", data: `${search}` });
   } else {
     res.status(500).json({
       status: 500,
@@ -75,41 +75,6 @@ app.get("/movies/delete", (req, res) => {
   res.send({ status: 200, message: "ok" });
 });
 
-// //Sort By date
-// app.get("/movies/read/by-date", (req, res) => {
-//   res.send({
-//     status: 200,
-//     data: movies.sort((a, b) => a.year - b.year),
-//   });
-// });
-
-// //Sort By rating
-// app.get("/movies/read/by-rating", (req, res) => {
-//   res.send({
-//     status: 200,
-//     data: movies.sort((a, b) => a.rating - b.rating),
-//   });
-// });
-
-// //Sort By Title
-// app.get("/movies/read/by-title", (req, res) => {
-//   let sorted = movies.sort((a, b) => {
-//     let A = a.title.toLowerCase();
-//     let B = b.title.toLowerCase();
-//     if (A < B) {
-//       return -1;
-//     }
-//     if (A > B) {
-//       return 1;
-//     }
-//     return 0;
-//   });
-//   res.send({
-//     status: 200,
-//     data: sorted,
-//   });
-// });
-
 app.get("/movies/read/by-date", (req, res) => {
   res.send({ status: 200, data: movies.sort((a, b) => a.year - b.year) });
 });
@@ -135,6 +100,51 @@ app.get("/movies/read/by-title", (req, res) => {
     data: moviesOrderedByTitle,
   });
 });
+
+// Step 7
+
+app.get("/movies/read/id/:id", (req, res) => {
+  const ID = parseInt(req.params.id);
+  if (ID <= movies.length) {
+    res.status(200).json({ status: 200, message: "OK", data: movies[ID] });
+  } else {
+    res.status(404).json({
+      status: 404,
+      error: true,
+      message: "the movie " + ID + " does not exist",
+    });
+  }
+});
+
+app.get("/movies/add", (req, res) => {
+  const { title, year, rating } = req.query;
+  if (!title || !year) {
+    return res.json({
+      status: 403,
+      error: true,
+      message: "You cannot create a movie without providing a title and a year",
+    });
+  }
+
+  if (year.length !== 4 || isNaN(year)) {
+    return res.json({
+      status: 403,
+      error: true,
+      message: "Year must be a 4-digit number",
+    });
+  }
+  if (!rating) {
+    rating = 4;
+  }
+  const mov = {
+    title,
+    year,
+    rating,
+  };
+  movies.push(mov);
+  res.json(movies);
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
