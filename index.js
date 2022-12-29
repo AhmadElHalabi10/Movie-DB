@@ -169,6 +169,54 @@ app.get("/movies/delete/:id", (req, res) => {
   }
 });
 
+//Step 10
+app.get("/movies/update/:id", (req, res) => {
+  const ID = req.params.id;
+  if (isNaN(ID)) {
+    res.status(404);
+    res.send({
+      status: 404,
+      error: true,
+      message: `please enter a valid id number`,
+    });
+  } else if (ID < 0 || ID > movies.length - 1) {
+    res.status(404);
+    res.send({
+      status: 404,
+      error: true,
+      message: `the movie ${req.params.id} does not exist`,
+    });
+  } else {
+    if (req.query.title !== undefined && req.query.title !== "") {
+      movies[req.params.id] = {
+        ...movies[req.params.id],
+        title: req.query.title,
+      };
+    }
+    if (
+      !isNaN(req.query.year) &&
+      req.query.year !== "" &&
+      req.query.year.length == 4
+    ) {
+      movies[req.params.id] = {
+        ...movies[req.params.id],
+        year: parseInt(req.query.year),
+      };
+    }
+    if (
+      !isNaN(req.query.rating) &&
+      req.query.rating !== undefined &&
+      req.query.rating !== ""
+    ) {
+      movies[req.params.id] = {
+        ...movies[req.params.id],
+        rating: parseFloat(req.query.rating),
+      };
+    }
+    res.send(movies);
+  }
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
