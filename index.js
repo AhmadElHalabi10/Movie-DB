@@ -34,9 +34,9 @@ app.get("/hello/:id", (req, res) => {
   res.send({ status: 200, message: `Hello, ${id}` });
 });
 
-app.get("/hello", (req, res) => {
-  res.send({ status: 200, message: `Hello, ` });
-});
+// app.get("/hello", (req, res) => {
+//   res.send({ status: 200, message: `Hello, ` });
+// });
 
 app.get("/search", (req, res) => {
   const search = req.query.s;
@@ -100,7 +100,10 @@ app.get("/movies/read/by-title", (req, res) => {
     data: moviesOrderedByTitle,
   });
 });
-
+("33");
+33;
+SVGAnimatedIntegerstring;
+string;
 // Step 7
 
 app.get("/movies/read/id/:id", (req, res) => {
@@ -117,7 +120,7 @@ app.get("/movies/read/id/:id", (req, res) => {
 });
 
 //Step 8
-app.get("/movies/add", (req, res) => {
+app.post("/movies/add", (req, res) => {
   const { title, year, rating } = req.query;
   if (!title || !year) {
     return res.json({
@@ -146,8 +149,10 @@ app.get("/movies/add", (req, res) => {
   res.json(movies);
 });
 
+if (!year) {
+}
 //Step 9
-app.get("/movies/delete/:id", (req, res) => {
+app.delete("/movies/delete/:id", (req, res) => {
   const ID = req.params.id;
   if (isNaN(ID)) {
     res.status(404);
